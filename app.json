@@ -1,15 +1,14 @@
 {
   "expo": {
-    "name": "BitesAndBraces",
+    "name": "Bites & Braces",
     "slug": "BitesAndBraces",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
+    "icon": "./assets/images/bblogo.png",
+    "notification":{
+      "icon":"./assets/images/whatsapp.png"
+   },
+   
     "updates": {
       "fallbackToCacheTimeout": 0
     },
@@ -21,9 +20,11 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/images/bblogo.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.hassoft.bnb",
+      "versionCode": 11
     },
     "web": {
       "favicon": "./assets/favicon.png"

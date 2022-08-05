@@ -1,0 +1,118 @@
+import React, {useState,useEffect} from 'react';
+import { StyleSheet,Text, View,Button, FlatList,StatusBar, Touchable,ActivityIndicator,Linking } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import HeaderScreens from '../component/HeaderScreens';
+import axios from 'axios';
+import { fontRegular, fontBold } from '../assets/font/fonts';
+import WebView from "react-native-webview"
+import { endPoint,getConfigurationExtension ,copyrightsTextValue, title} from '../assets/strings/strings';
+import { textColorWhite } from '../assets/colors/colors';
+
+
+export default function App({navigation,route}) {
+  const [loading, isLoading] = React.useState(false);
+
+  const [valueConfig, setvalueConfig] = React.useState("");
+
+
+
+  const callConfigApi = () =>{
+    axios.get(endPoint+getConfigurationExtension,{
+      "headers": {
+      "content-type": "application/json",
+      },
+      
+      })
+      .then(function(response) {
+    isLoading(false)
+      console.log(response.data[0].TermsAndConditions);
+      setvalueConfig(response.data[0].TermsAndConditions)
+    
+      })
+      
+      .catch(function(error) {
+      isLoading(false)
+      console.log(error);
+      
+      });
+      
+      
+  }
+
+  
+  
+  useEffect(()  => {
+    console.log("Calling Config API")
+   
+
+    isLoading(true)
+    callConfigApi()
+  }, []);
+
+  const pressHandlerBack = () => {
+    console.log("im pressed")
+    navigation.goBack()
+   }
+
+
+  if(loading) {
+    return (
+         <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+             <ActivityIndicator size="large" color="#0000ff"/>
+         </View>
+    )
+   }
+
+  return (
+    <SafeAreaView style={styles.container}>
+   
+   
+    <HeaderScreens title={title}  pressHandler={pressHandlerBack}  navigation={navigation} />
+    
+    <WebView
+      style={styles.container}
+      originWhitelist={['*']}
+      source={{ html: valueConfig }}
+    />
+
+  <View style={styles.footer}><Text style={styles.textFooter}>{copyrightsTextValue}</Text></View>
+   
+    </SafeAreaView>
+   
+  );
+}
+const styles = StyleSheet.create({
+  container:{
+    flex:1,
+    padding:8,
+    backgroundColor:'#ffffff'
+  },
+  footer:{
+    position: 'absolute', 
+    left: 0, 
+    right: 0, 
+    bottom: 0,
+    backgroundColor:'#000000'
+  },
+  textFooter:{
+    alignSelf:'center',
+    color:textColorWhite,
+    fontFamily:fontRegular
+  },
+  copyrightText:{
+    color:'#ffffff',
+    fontFamily:fontRegular,
+    fontSize:12
+  },
+  nameStyle:{
+    marginLeft:16,
+    fontFamily:fontBold,
+    marginBottom:16,
+    marginTop:16,
+    textAlign:'center',
+    fontSize:24
+    
+   }
+});
+
+
